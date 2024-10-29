@@ -1,0 +1,102 @@
+#### Prueba de funcionamiento 1
+PS C:\Users\alexy> Invoke-RestMethod -Uri 'http://localhost:8080/sort-products' -Method Post -Headers @{ "Content-Type" = "application/json" } -Body '{
+>>   "salesWeight": 0.5,
+>>   "stockWeight": 0.5,
+>>   "productSales": [
+>>     {"productId": "1", "sales": 50000},
+>>     {"productId": "2", "sales": 100000},
+>>     {"productId": "3", "sales": 100000},
+>>     {"productId": "4", "sales": 75000}
+>>   ],
+>>   "productStock": [
+>>     {"productId": "1", "stock": 100000},
+>>     {"productId": "2", "stock": 400000},
+>>     {"productId": "3", "stock": 200000},
+>>     {"productId": "4", "stock": 300000}
+>>   ]
+>> }'
+
+productId  stock  sales
+---------  -----  -----
+2         400000 100000
+4         300000  75000
+3         200000 100000
+1         100000  50000
+
+
+#### Prueba de funcionamiento 2
+PS C:\Users\alexy> Invoke-RestMethod -Uri 'http://localhost:8080/sort-products' -Method Post -Headers @{ "Content-Type" = "application/json" } -Body '{
+>>   "salesWeight": 0.7,
+>>   "stockWeight": 0.1,
+>>   "productSales": [
+>>     {"productId": "1", "sales": 30000},
+>>     {"productId": "2", "sales": 80000},
+>>     {"productId": "3", "sales": 60000},
+>>     {"productId": "4", "sales": 100000}
+>>   ],
+>>   "productStock": [
+>>     {"productId": "1", "stock": 150000},
+>>     {"productId": "2", "stock": 200000},
+>>     {"productId": "3", "stock": 50000},
+>>     {"productId": "4", "stock": 300000}
+>>   ]
+>> }'
+
+productId  stock  sales
+---------  -----  -----
+4         300000 100000
+2         200000  80000
+3          50000  60000
+1         150000  30000
+
+
+#### Prueba sin datos
+PS C:\Users\alexy> Invoke-RestMethod -Uri 'http://localhost:8080/sort-products' -Method Post -Headers @{ "Content-Type" = "application/json" } -Body '{
+>>   "salesWeight": 0.5,
+>>   "productSales": [
+>>     {"productId": "1", "sales": 50000},
+>>     {"productId": "2", "sales": 100000},
+>>     {"productId": "3", "sales": 100000},
+>>     {"productId": "4", "sales": 75000}
+>>   ],
+>>   "productStock": [
+>>     {"productId": "1", "stock": 100000},
+>>     {"productId": "2", "stock": 400000},
+>>     {"productId": "3", "stock": 200000},
+>>     {"productId": "4", "stock": 300000}
+>>   ]
+>> }'
+Invoke-RestMethod : {"error":"Required data: salesWeight float, stockWeigth float, productSales array, productStock
+array."}
+En línea: 1 Carácter: 1
++ Invoke-RestMethod -Uri 'http://localhost:8080/sort-products' -Method  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
+
+
+#### Prueba URI incorrecta
+PS C:\Users\alexy> Invoke-RestMethod -Uri 'http://localhost:8080/sort' -Method Post -Headers @{ "Content-Type" = "application/json" } -Body '{
+>>   "salesWeight": 0.7,
+>>   "stockWeight": 0.1,
+>>   "productSales": [
+>>     {"productId": "1", "sales": 30000},
+>>     {"productId": "2", "sales": 80000},
+>>     {"productId": "3", "sales": 60000},
+>>     {"productId": "4", "sales": 100000}
+>>   ],
+>>   "productStock": [
+>>     {"productId": "1", "stock": 150000},
+>>     {"productId": "2", "stock": 200000},
+>>     {"productId": "3", "stock": 50000},
+>>     {"productId": "4", "stock": 300000}
+>>   ]
+>> }'
+Invoke-RestMethod : {"error":"The requested resource was not found."}
+En línea: 1 Carácter: 1
++ Invoke-RestMethod -Uri 'http://localhost:8080/sort' -Method Post -Hea ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-RestMethod], WebExc
+   eption
+    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeRestMethodCommand
